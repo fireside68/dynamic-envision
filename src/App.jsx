@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, MapPin, Phone, Mail, Star, Check, RefreshCw } from 'lucide-react';
 import fullLogo from './assets/logos/fulllogo.png';
-import transparentLogo from './assets/logos/grayscale_transparent.png';
+import transparentLogo from './assets/logos/fulllogo_transparent.png';
 
 export default function DynamicEnvision() {
   const [formData, setFormData] = useState({
@@ -15,24 +15,52 @@ export default function DynamicEnvision() {
   const windowImages = import.meta.glob('./assets/pictures/windows/*.{jpg,jpeg,png}', { eager: true });
   const exteriorImages = import.meta.glob('./assets/pictures/exterior/*.{jpg,jpeg,png}', { eager: true });
 
-  // Convert the imported images to a usable format
-  const processImages = (imageObj, category) => {
-    return Object.entries(imageObj).map(([path, module]) => {
-      const fileName = path.split('/').pop().split('.')[0]; // Extract filename without extension
-      return {
-        src: module.default,
-        title: fileName.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), // Clean up filename for title
-        category: category,
-        location: getRandomLocation() // You can customize this
-      };
-    });
+  // Get a location that feels authentic and consistent
+  const getSmartLocation = (imagePath, category) => {
+    const locations = [
+      'Denver', 'Aurora', 'Lakewood', 'Boulder', 'Westminster',
+      'Highlands Ranch', 'Centennial', 'Thornton', 'Arvada',
+      'Broomfield', 'Wheat Ridge', 'Englewood', 'Littleton'
+    ];
+
+    // Use the image path to create a consistent hash for location assignment
+    // This way the same image always gets the same location
+    let hash = 0;
+    const str = imagePath + category;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+
+    const locationIndex = Math.abs(hash) % locations.length;
+    return locations[locationIndex];
   };
 
-  // Get a random location for variety
-  const getRandomLocation = () => {
-    const locations = ['Denver', 'Aurora', 'Lakewood', 'Boulder', 'Westminster', 'Highlands Ranch',
-      'Centennial', 'Thornton', 'Pueblo', 'Colorado Springs', 'Arvada', 'Broomfield'];
-    return locations[Math.floor(Math.random() * locations.length)];
+  // Convert the imported images to a usable format
+  const processImages = (imageObj, category) => {
+    return Object.entries(imageObj).map(([path, module], index) => {
+      const fileName = path.split('/').pop().split('.')[0];
+
+      // Create better titles for IMG_xxx or IMG-xxx files
+      let title;
+      if (fileName.match(/^IMG[_-]/)) {
+        // Extract the number after IMG_ or IMG-
+        const number = fileName.split(/[_-]/)[1] || (index + 1).toString().padStart(4, '0');
+        title = `${category} Project ${number}`;
+      } else {
+        // Handle other filename formats
+        title = fileName.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      }
+
+      return {
+        src: module.default,
+        title: title,
+        category: category,
+        location: getSmartLocation(path, category),
+        originalPath: path
+      };
+    });
   };
 
   // Process all images
@@ -82,41 +110,45 @@ export default function DynamicEnvision() {
 
       {/* Hero Section */}
       <section className="relative min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-100 overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
+        {/* Background Elements - could be replaced with video background */}
+        <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 right-20 w-96 h-96 bg-gray-400 rounded-full mix-blend-multiply filter blur-3xl"></div>
           <div className="absolute -bottom-8 left-20 w-96 h-96 bg-gray-300 rounded-full mix-blend-multiply filter blur-3xl"></div>
+          {/* Optional: Add a subtle pattern or texture here */}
+          <div className="absolute inset-0 opacity-10 bg-gradient-to-br from-amber-50 via-transparent to-orange-50"></div>
         </div>
 
-        <div className="relative min-h-screen flex flex-col lg:flex-row items-center justify-center px-6 py-20 max-w-7xl mx-auto">
-          {/* Logo Side */}
-          <div className="lg:w-1/2 flex items-center justify-center mb-12 lg:mb-0">
-            <div className="relative">
+        <div className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20 max-w-6xl mx-auto text-center">
+
+          {/* Logo Section - Now prominently displayed on top */}
+          <div className="mb-12">
+            <div className="relative inline-block">
               <img
                 src={transparentLogo}
                 alt="Dynamic Envision Solutions"
-                className="w-72 h-72 lg:w-96 lg:h-96 opacity-90 hover:opacity-100 transition-opacity duration-500"
+                className="w-80 sm:w-96 md:w-[28rem] lg:w-[32rem] h-auto opacity-95 hover:opacity-100 transition-opacity duration-500"
               />
-              {/* Subtle earth tone glow behind logo */}
-              <div className="absolute inset-0 bg-gradient-radial from-amber-600/10 via-orange-600/5 to-transparent rounded-full blur-3xl transform scale-150"></div>
+              {/* Subtle glow effect behind logo */}
+              <div className="absolute inset-0 bg-gradient-radial from-amber-600/8 via-orange-600/4 to-transparent blur-2xl transform scale-125"></div>
             </div>
           </div>
 
-          {/* Content Side */}
-          <div className="lg:w-1/2 text-center lg:text-left space-y-8">
+          {/* Content Section - Below the logo */}
+          <div className="space-y-8 max-w-4xl">
             <div>
-              <h1 className="text-5xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-6 leading-tight">
                 Premium Windows &{' '}
                 <span className="text-transparent bg-gradient-to-r from-amber-700 to-orange-700 bg-clip-text">
                   Doors
                 </span>
               </h1>
-              <div className="w-24 h-1 bg-gradient-to-r from-amber-700 to-orange-700 mx-auto lg:mx-0 mb-6"></div>
-              <p className="text-xl lg:text-2xl text-gray-600 max-w-xl mx-auto lg:mx-0">
+              <div className="w-24 h-1 bg-gradient-to-r from-amber-700 to-orange-700 mx-auto mb-8"></div>
+              <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                 15 years of craftsmanship in the Denver metro area. We don't just replace windows—we transform your home's comfort and aesthetic.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <button className="bg-gray-900 text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                 Get a Quote
               </button>
@@ -125,18 +157,18 @@ export default function DynamicEnvision() {
               </button>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-8 text-gray-700 font-semibold justify-center lg:justify-start">
-              <div className="flex items-center gap-3 justify-center lg:justify-start">
-                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-amber-700" />
+            <div className="flex flex-col sm:flex-row gap-8 lg:gap-12 text-gray-700 font-semibold justify-center items-center pt-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                  <MapPin className="w-6 h-6 text-amber-700" />
                 </div>
-                <span>Denver to Pueblo</span>
+                <span className="text-lg">Denver to Pueblo</span>
               </div>
-              <div className="flex items-center gap-3 justify-center lg:justify-start">
-                <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                  <Phone className="w-5 h-5 text-amber-700" />
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                  <Phone className="w-6 h-6 text-amber-700" />
                 </div>
-                <span>Free Consultations</span>
+                <span className="text-lg">Free Consultations</span>
               </div>
             </div>
           </div>
