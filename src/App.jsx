@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ChevronDown, MapPin, Phone, Mail, Star, Check } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ChevronDown, MapPin, Phone, Mail, Star, Check, RefreshCw } from 'lucide-react';
 import fullLogo from './assets/logos/fulllogo.png';
 import transparentLogo from './assets/logos/grayscale_transparent.png';
 
@@ -10,6 +10,50 @@ export default function DynamicEnvision() {
     phone: '',
     message: ''
   });
+
+  // Dynamic image imports using Vite's import.meta.glob
+  const windowImages = import.meta.glob('./assets/pictures/windows/*.{jpg,jpeg,png}', { eager: true });
+  const exteriorImages = import.meta.glob('./assets/pictures/exterior/*.{jpg,jpeg,png}', { eager: true });
+
+  // Convert the imported images to a usable format
+  const processImages = (imageObj, category) => {
+    return Object.entries(imageObj).map(([path, module]) => {
+      const fileName = path.split('/').pop().split('.')[0]; // Extract filename without extension
+      return {
+        src: module.default,
+        title: fileName.replace(/[-_]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), // Clean up filename for title
+        category: category,
+        location: getRandomLocation() // You can customize this
+      };
+    });
+  };
+
+  // Get a random location for variety
+  const getRandomLocation = () => {
+    const locations = ['Denver', 'Aurora', 'Lakewood', 'Boulder', 'Westminster', 'Highlands Ranch',
+      'Centennial', 'Thornton', 'Pueblo', 'Colorado Springs', 'Arvada', 'Broomfield'];
+    return locations[Math.floor(Math.random() * locations.length)];
+  };
+
+  // Process all images
+  const windowProjects = processImages(windowImages, 'Windows');
+  const exteriorProjects = processImages(exteriorImages, 'Exterior');
+  const allProjects = [...windowProjects, ...exteriorProjects];
+
+  // Function to randomly select 6 images from all projects
+  const getRandomPortfolioItems = () => {
+    if (allProjects.length === 0) return [];
+    const shuffled = [...allProjects].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, Math.min(6, allProjects.length));
+  };
+
+  // Use useState to maintain the same random selection until refreshed
+  const [portfolioItems, setPortfolioItems] = useState(() => getRandomPortfolioItems());
+
+  // Function to refresh the portfolio selection
+  const refreshPortfolio = () => {
+    setPortfolioItems(getRandomPortfolioItems());
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +69,7 @@ export default function DynamicEnvision() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src={transparentLogo} alt="Dynamic Envision Solutions" className="h-10 w-auto" />
-            <span className="text-lg font-bold text-gray-900">Dynamic Envision</span>
+            <span className="text-lg font-bold text-gray-900">Dynamic Envision Solutions</span>
           </div>
           <div className="flex gap-8 text-sm font-medium">
             <a href="#portfolio" className="text-gray-700 hover:text-amber-700 transition">Portfolio</a>
@@ -47,9 +91,9 @@ export default function DynamicEnvision() {
           {/* Logo Side */}
           <div className="lg:w-1/2 flex items-center justify-center mb-12 lg:mb-0">
             <div className="relative">
-              <img 
-                src={transparentLogo} 
-                alt="Dynamic Envision Solutions" 
+              <img
+                src={transparentLogo}
+                alt="Dynamic Envision Solutions"
                 className="w-72 h-72 lg:w-96 lg:h-96 opacity-90 hover:opacity-100 transition-opacity duration-500"
               />
               {/* Subtle earth tone glow behind logo */}
@@ -107,28 +151,70 @@ export default function DynamicEnvision() {
       <section id="portfolio" className="py-20 px-6 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Our Work</h2>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">Our Work</h2>
+              <button
+                onClick={refreshPortfolio}
+                className="p-2 rounded-full bg-amber-100 hover:bg-amber-200 transition-colors group"
+                title="Refresh portfolio selection"
+              >
+                <RefreshCw className="w-5 h-5 text-amber-700 group-hover:rotate-180 transition-transform duration-500" />
+              </button>
+            </div>
             <div className="w-24 h-1 bg-gradient-to-r from-amber-700 to-orange-700 mx-auto mb-6"></div>
             <p className="text-lg text-gray-600">Every project tells a story of quality and attention to detail</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <div key={item} className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 h-72 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center cursor-pointer transform hover:-translate-y-2">
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
-                <div className="text-center z-10 group-hover:scale-105 transition-transform duration-300">
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <div className="w-8 h-8 bg-gradient-to-r from-amber-700 to-orange-700 rounded"></div>
+            {portfolioItems.map((item, index) => (
+              <div key={`${item.src}-${index}`} className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 h-72 cursor-pointer transform hover:-translate-y-2">
+                <div className="absolute inset-0">
+                  <img
+                    src={item.src}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => {
+                      // Fallback to placeholder if image doesn't exist
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  {/* Fallback placeholder */}
+                  <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center" style={{ display: 'none' }}>
+                    <div className="text-center">
+                      <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                        <div className="w-8 h-8 bg-gradient-to-r from-amber-700 to-orange-700 rounded"></div>
+                      </div>
+                      <p className="text-gray-600 text-sm">[Photo coming soon]</p>
+                    </div>
                   </div>
-                  <p className="text-gray-800 font-semibold mb-2">Project {item}</p>
-                  <p className="text-sm text-gray-600">[Photo placeholder]</p>
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-6 group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="font-semibold text-lg mb-1">{item.title}</h3>
+                  <p className="text-sm text-gray-200">{item.location}</p>
                 </div>
               </div>
             ))}
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-gray-600 italic mb-4">Ready to upload your project photos? Contact us to add more to your portfolio.</p>
+            <p className="text-gray-600 italic mb-4">
+              Showing {portfolioItems.length} of {allProjects.length} completed projects.
+              {allProjects.length > 6 && (
+                <button
+                  onClick={refreshPortfolio}
+                  className="ml-2 text-amber-700 hover:text-amber-600 underline"
+                >
+                  See different projects
+                </button>
+              )}
+            </p>
+            {allProjects.length === 0 && (
+              <p className="text-gray-500 text-sm">
+                Add images to ./assets/pictures/windows/ and ./assets/pictures/exterior/ to populate the portfolio
+              </p>
+            )}
           </div>
         </div>
       </section>
@@ -137,7 +223,7 @@ export default function DynamicEnvision() {
       <section id="about" className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Why Dynamic Envision?</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Why Dynamic Envision Solutions?</h2>
             <div className="w-24 h-1 bg-gradient-to-r from-amber-700 to-orange-700 mx-auto"></div>
           </div>
 
