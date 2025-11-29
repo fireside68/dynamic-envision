@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Phone, Mail, Star, Check, RefreshCw, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Star, Check, RefreshCw, ArrowRight, Menu, X } from 'lucide-react';
 import fullLogo from './assets/logos/fulllogo.png';
 import transparentLogo from './assets/logos/fulllogo_transparent.png';
 
@@ -10,6 +10,9 @@ export default function DynamicEnvision() {
     phone: '',
     message: ''
   });
+
+  // Mobile menu state
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Hero background slideshow state
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -141,6 +144,37 @@ export default function DynamicEnvision() {
     }
   ];
 
+  // Close mobile menu when clicking a link
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <div className="w-full bg-white">
       {/* Navigation */}
@@ -150,14 +184,72 @@ export default function DynamicEnvision() {
             <img src={transparentLogo} alt="Dynamic Envision Solutions" className="h-10 w-auto" />
             <span className="text-lg font-bold text-gray-900 hidden sm:block">Dynamic Envision Solutions</span>
           </div>
-          <div className="flex gap-6 lg:gap-8 text-sm font-medium">
-            <a href="#services" className="text-gray-700 hover:text-amber-700 transition">Services</a>
-            <a href="#portfolio" className="text-gray-700 hover:text-amber-700 transition">Portfolio</a>
-            <a href="#about" className="text-gray-700 hover:text-amber-700 transition">About</a>
-            <a href="#contact" className="text-gray-700 hover:text-amber-700 transition">Contact</a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex gap-6 lg:gap-8 text-sm font-medium">
+            <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className="text-gray-700 hover:text-amber-700 transition">Services</a>
+            <a href="#portfolio" onClick={(e) => handleNavClick(e, 'portfolio')} className="text-gray-700 hover:text-amber-700 transition">Portfolio</a>
+            <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className="text-gray-700 hover:text-amber-700 transition">About</a>
+            <a href="#contact" onClick={(e) => handleNavClick(e, 'contact')} className="text-gray-700 hover:text-amber-700 transition">Contact</a>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-gray-700 hover:text-amber-700 transition"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Menu Dropdown */}
+        <div
+          className={`md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg transition-all duration-300 ease-in-out ${mobileMenuOpen
+              ? 'opacity-100 visible translate-y-0'
+              : 'opacity-0 invisible -translate-y-2'
+            }`}
+        >
+          <div className="px-6 py-4 space-y-1">
+            <a
+              href="#services"
+              onClick={(e) => handleNavClick(e, 'services')}
+              className="block py-3 text-gray-700 hover:text-amber-700 hover:bg-gray-50 rounded-lg px-3 transition font-medium"
+            >
+              Services
+            </a>
+            <a
+              href="#portfolio"
+              onClick={(e) => handleNavClick(e, 'portfolio')}
+              className="block py-3 text-gray-700 hover:text-amber-700 hover:bg-gray-50 rounded-lg px-3 transition font-medium"
+            >
+              Portfolio
+            </a>
+            <a
+              href="#about"
+              onClick={(e) => handleNavClick(e, 'about')}
+              className="block py-3 text-gray-700 hover:text-amber-700 hover:bg-gray-50 rounded-lg px-3 transition font-medium"
+            >
+              About
+            </a>
+            <a
+              href="#contact"
+              onClick={(e) => handleNavClick(e, 'contact')}
+              className="block py-3 bg-amber-500 text-white hover:bg-amber-600 rounded-lg px-3 transition font-medium text-center mt-3"
+            >
+              Get a Quote
+            </a>
           </div>
         </div>
       </nav>
+
+      {/* Overlay for mobile menu */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/20 z-40 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
 
       {/* Hero Section - Product Forward with Ken Burns Background */}
       <section className="relative bg-gray-900 text-white overflow-hidden">
