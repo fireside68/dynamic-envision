@@ -14,14 +14,29 @@ A modern, real-time web application for Dynamic Envision Solutions, a window and
 
 ## Getting Started
 
-### Prerequisites
+### Quick Setup with Mise (Recommended)
 
-- Elixir 1.18+
-- Erlang/OTP 27+
-- PostgreSQL 14+
-- Node.js 18+ (for asset compilation)
+This project uses [mise](https://mise.jdx.dev/) for managing Elixir, Erlang, and Node.js versions.
 
-### Installation
+```bash
+# Install mise (if not already installed)
+curl https://mise.run | sh
+
+# Run the setup script
+./setup.sh
+```
+
+The setup script will:
+- Install Elixir 1.18.1, Erlang 27.2, and Node.js 20.11.1
+- Install all dependencies
+- Create the database
+- Run tests to verify everything works
+
+See [`MISE_SETUP.md`](MISE_SETUP.md) for detailed mise installation and usage instructions.
+
+### Manual Installation
+
+If you have Elixir, Erlang, and Node.js already installed:
 
 ```bash
 # Install dependencies
@@ -38,6 +53,13 @@ mix phx.server
 ```
 
 Visit [`localhost:4000`](http://localhost:4000) in your browser.
+
+### Prerequisites
+
+- Elixir 1.18+
+- Erlang/OTP 27+
+- PostgreSQL 14+
+- Node.js 20+ (for asset compilation)
 
 ## Testing
 
