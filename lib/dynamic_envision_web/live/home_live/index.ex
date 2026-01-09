@@ -1,6 +1,8 @@
 defmodule DynamicEnvisionWeb.HomeLive.Index do
   use DynamicEnvisionWeb, :live_view
 
+  import DynamicEnvisionWeb.Sections
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, assign(socket, page_title: "Dynamic Envision Solutions")}
@@ -9,56 +11,42 @@ defmodule DynamicEnvisionWeb.HomeLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="min-h-screen bg-white">
-      <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 class="text-3xl font-bold text-gray-900">
-            Dynamic Envision Solutions
-          </h1>
-          <p class="mt-2 text-lg text-gray-600">
-            Converting from React to Phoenix LiveView
-          </p>
-        </div>
-      </header>
+    <div class="w-full bg-white">
+      <%!-- Navigation --%>
+      <.live_component module={DynamicEnvisionWeb.NavigationLive} id="navigation" />
 
-      <main>
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div class="px-4 py-6 sm:px-0">
-            <div class="border-4 border-dashed border-gray-200 rounded-lg h-96 flex items-center justify-center">
-              <div class="text-center">
-                <h2 class="text-2xl font-semibold text-gray-900 mb-4">
-                  Phoenix LiveView Application
-                </h2>
-                <p class="text-gray-600 mb-8">
-                  Conversion in progress...
-                </p>
-                <div class="space-y-2 text-left max-w-md mx-auto">
-                  <div class="flex items-center">
-                    <span class="text-green-500 mr-2">✓</span>
-                    <span>Phoenix 1.7 project initialized</span>
-                  </div>
-                  <div class="flex items-center">
-                    <span class="text-green-500 mr-2">✓</span>
-                    <span>Asset pipeline configured</span>
-                  </div>
-                  <div class="flex items-center">
-                    <span class="text-green-500 mr-2">✓</span>
-                    <span>21 images migrated</span>
-                  </div>
-                  <div class="flex items-center">
-                    <span class="text-green-500 mr-2">✓</span>
-                    <span>Test infrastructure ready</span>
-                  </div>
-                  <div class="flex items-center">
-                    <span class="text-yellow-500 mr-2">→</span>
-                    <span>Next: PhotoShuffle module</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <%!-- Hero Section with Ken Burns Slideshow --%>
+      <.live_component module={DynamicEnvisionWeb.HeroLive} id="hero" />
+
+      <%!-- Services Section --%>
+      <.services />
+
+      <%!-- Partners Section (Placeholder) --%>
+      <section class="bg-white py-12">
+        <div class="max-w-6xl mx-auto px-6">
+          <h2 class="text-2xl font-bold text-center text-gray-900 mb-8">
+            Trusted Partners
+          </h2>
+          <div class="flex flex-wrap justify-center items-center gap-8 opacity-50">
+            <div class="text-gray-400 text-sm">Partner logos coming soon</div>
           </div>
         </div>
-      </main>
+      </section>
+
+      <%!-- Portfolio Section --%>
+      <.live_component module={DynamicEnvisionWeb.PortfolioLive} id="portfolio" />
+
+      <%!-- About Section --%>
+      <.about />
+
+      <%!-- Reviews Section --%>
+      <.reviews />
+
+      <%!-- Contact Section --%>
+      <.live_component module={DynamicEnvisionWeb.ContactLive} id="contact" />
+
+      <%!-- Footer --%>
+      <.footer />
     </div>
     """
   end
