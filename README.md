@@ -1,16 +1,68 @@
-# React + Vite
+# Dynamic Envision Solutions - Phoenix LiveView Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> **Note:** This application is being converted from React + Vite to Phoenix LiveView with Elixir 1.18
 
-Currently, two official plugins are available:
+A modern, real-time web application for Dynamic Envision Solutions, a window and door installation company serving the Denver metro area.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technology Stack
 
-## React Compiler
+- **Elixir 1.18** - Functional programming language
+- **Phoenix 1.7** - Web framework for scalable applications
+- **Phoenix LiveView 1.0** - Real-time, server-rendered UI
+- **PostgreSQL** - Relational database
+- **Tailwind CSS 3.4** - Utility-first CSS framework
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting Started
 
-## Expanding the ESLint configuration
+### Prerequisites
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Elixir 1.18+
+- Erlang/OTP 27+
+- PostgreSQL 14+
+- Node.js 18+ (for asset compilation)
+
+### Installation
+
+```bash
+# Install dependencies
+mix deps.get
+
+# Create and migrate database
+mix ecto.setup
+
+# Install Node.js dependencies
+cd assets && npm install
+
+# Start Phoenix server
+mix phx.server
+```
+
+Visit [`localhost:4000`](http://localhost:4000) in your browser.
+
+## Testing
+
+```bash
+# Run all tests
+mix test
+
+# Run with coverage
+mix coveralls.html
+
+# Code quality
+mix credo --strict
+mix dialyzer
+```
+
+## Features
+
+- **Dynamic Hero Slideshow** with Ken Burns effect
+- **Portfolio Grid** with randomized display
+- **Contact Form** with real-time validation
+- **PhotoShuffle Module** - Reusable image management library
+- **Responsive Design** - Mobile-first approach
+
+## Learn More
+
+- [Phoenix Framework](https://www.phoenixframework.org/)
+- [Phoenix LiveView](https://hexdocs.pm/phoenix_live_view/)
+- [Elixir](https://elixir-lang.org/)
