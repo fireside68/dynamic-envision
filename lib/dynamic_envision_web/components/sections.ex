@@ -6,7 +6,6 @@ defmodule DynamicEnvisionWeb.Sections do
   About, Reviews, and Footer sections.
   """
   use Phoenix.Component
-  use Gettext, backend: DynamicEnvisionWeb.Gettext
 
   @doc """
   Renders the Services section with Windows, Doors, and Exterior categories.
@@ -40,7 +39,7 @@ defmodule DynamicEnvisionWeb.Sections do
               <%= for material <- ["Vinyl Windows", "Wood Windows", "Composite Windows", "Fiberglass Windows"] do %>
                 <div class="flex items-center gap-2 text-gray-700">
                   <span class="text-amber-600">✓</span>
-                  <span>{material}</span>
+                  <span><%= material %></span>
                 </div>
               <% end %>
             </div>
@@ -57,7 +56,7 @@ defmodule DynamicEnvisionWeb.Sections do
               <%= for door_type <- ["Entry Doors", "French Doors", "Sliding Doors", "Patio Doors"] do %>
                 <div class="flex items-center gap-2 text-gray-700">
                   <span class="text-amber-600">✓</span>
-                  <span>{door_type}</span>
+                  <span><%= door_type %></span>
                 </div>
               <% end %>
             </div>
@@ -74,7 +73,7 @@ defmodule DynamicEnvisionWeb.Sections do
               <%= for service <- ["Siding Installation", "Trim Work", "Exterior Repairs", "Renovations"] do %>
                 <div class="flex items-center gap-2 text-gray-700">
                   <span class="text-amber-600">✓</span>
-                  <span>{service}</span>
+                  <span><%= service %></span>
                 </div>
               <% end %>
             </div>
@@ -117,11 +116,11 @@ defmodule DynamicEnvisionWeb.Sections do
             <%= for point <- key_differentiators() do %>
               <div class="flex gap-4">
                 <div class="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
-                  <span class="text-2xl">{point.icon}</span>
+                  <span class="text-2xl"><%= point.icon %></span>
                 </div>
                 <div>
-                  <h3 class="font-bold text-gray-900 mb-1">{point.title}</h3>
-                  <p class="text-gray-600 text-sm">{point.description}</p>
+                  <h3 class="font-bold text-gray-900 mb-1"><%= point.title %></h3>
+                  <p class="text-gray-600 text-sm"><%= point.description %></p>
                 </div>
               </div>
             <% end %>
@@ -167,15 +166,15 @@ defmodule DynamicEnvisionWeb.Sections do
                 <% end %>
               </div>
               <p class="text-gray-700 mb-4 italic">
-                "{review.text}"
+                "<%= review.text %>"
               </p>
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center font-bold text-amber-700">
-                  {String.first(review.name)}
+                  <%= String.first(review.name) %>
                 </div>
                 <div>
-                  <p class="font-semibold text-gray-900">{review.name}</p>
-                  <p class="text-sm text-gray-500">{review.location}</p>
+                  <p class="font-semibold text-gray-900"><%= review.name %></p>
+                  <p class="text-sm text-gray-500"><%= review.location %></p>
                 </div>
               </div>
             </div>
@@ -208,7 +207,7 @@ defmodule DynamicEnvisionWeb.Sections do
       <div class="max-w-6xl mx-auto px-6">
         <div class="text-center">
           <img
-            src="/design/logos/fulllogo_transparent.png"
+            src="/images/fulllogo_transparent.png"
             alt="Dynamic Envision Solutions"
             class="h-16 w-auto mx-auto mb-6 opacity-90"
           />

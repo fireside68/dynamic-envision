@@ -24,7 +24,7 @@ defmodule DynamicEnvisionWeb.NavigationLive do
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <div class="flex items-center gap-3">
             <img
-              src={~p"/design/logos/fulllogo_transparent.png"}
+              src="/images/fulllogo_transparent.png"
               alt="Dynamic Envision Solutions"
               class="h-10 w-auto"
             />
