@@ -51,17 +51,17 @@ defmodule DynamicEnvisionWeb.PortfolioLive do
               <div class="portfolio-overlay absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                 <div class="flex items-center gap-2 mb-2">
                   <span class="text-xs bg-amber-500 text-white px-2 py-1 rounded-full font-medium">
-                    <%= image.category %>
+                    {image.category}
                   </span>
                   <%= if image.location do %>
                     <span class="text-xs text-gray-300 flex items-center gap-1">
                       <span>📍</span>
-                      <%= image.location %>
+                      {image.location}
                     </span>
                   <% end %>
                 </div>
                 <h3 class="text-white font-bold text-lg">
-                  <%= image.title %>
+                  {image.title}
                 </h3>
               </div>
             </div>
@@ -99,8 +99,8 @@ defmodule DynamicEnvisionWeb.PortfolioLive do
   end
 
   defp load_all_images do
-    windows_path = Application.app_dir(:dynamic_envision, "priv/static/images/windows")
-    exterior_path = Application.app_dir(:dynamic_envision, "priv/static/images/exterior")
+    windows_path = Application.app_dir(:dynamic_envision, "priv/static/design/pictures/windows")
+    exterior_path = Application.app_dir(:dynamic_envision, "priv/static/design/pictures/exterior")
 
     with {:ok, windows} <- PhotoShuffle.process_images(windows_path, "Windows"),
          {:ok, exterior} <- PhotoShuffle.process_images(exterior_path, "Exterior") do

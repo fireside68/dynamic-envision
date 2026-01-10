@@ -56,12 +56,14 @@ defmodule DynamicEnvision.Photos.PhotoShuffle do
     "Boulder",
     "Fort Collins",
     "Colorado Springs",
+    "Adams County",
+    "Arvada",
+    "Broomfield",
     "Lakewood",
     "Arvada",
     "Westminster",
     "Thornton",
     "Centennial",
-    "Pueblo",
     "Longmont",
     "Cheyenne"
   ]
@@ -102,7 +104,7 @@ defmodule DynamicEnvision.Photos.PhotoShuffle do
   @spec process_images(String.t(), String.t(), keyword()) ::
           {:ok, [Image.t()]} | {:error, term()}
   def process_images(path, category, opts \\ []) do
-    base_url = Keyword.get(opts, :base_url, "/images")
+    base_url = Keyword.get(opts, :base_url, "/design/pictures")
 
     case @file_system.list_images(path) do
       {:ok, image_paths} ->
@@ -285,7 +287,7 @@ defmodule DynamicEnvision.Photos.PhotoShuffle do
   defp build_image_url(image_path, base_url) do
     # Extract the relevant part of the path for the URL
     # e.g., "/priv/static/images/windows/IMG_5366.jpg" → "/images/windows/IMG_5366.jpg"
-    case String.split(image_path, "/images/", parts: 2) do
+    case String.split(image_path, "priv/static/", parts: 2) do
       [_prefix, suffix] ->
         Path.join(base_url, suffix)
 

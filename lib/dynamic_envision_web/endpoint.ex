@@ -11,9 +11,14 @@ defmodule DynamicEnvisionWeb.Endpoint do
     same_site: "Lax"
   ]
 
+  # Tidewave installation
+  if Code.ensure_loaded?(Tidewave) do
+    plug Tidewave
+  end
+
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [connect_info: [session: @session_options]],
-    longpoll: false
+    longpoll: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -28,8 +33,8 @@ defmodule DynamicEnvisionWeb.Endpoint do
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
-    socket "/phoenix/live_reload/socket", Phoenix.LiveReload.Socket
-    plug Phoenix.LiveReload
+    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
+    plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
     plug Phoenix.Ecto.CheckRepoStatus, otp_app: :dynamic_envision
   end
