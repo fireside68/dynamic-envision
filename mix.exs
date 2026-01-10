@@ -68,6 +68,9 @@ defmodule DynamicEnvision.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
 
+      # PhotoShuffle - Image management library
+      {:photo_shuffle, github: "unaffiliatedstudios/photo_shuffle"},
+
       # Testing
       {:mox, "~> 1.1", only: :test},
       {:wallaby, "~> 0.29.0", only: :test, runtime: false},

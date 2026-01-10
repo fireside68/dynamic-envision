@@ -80,7 +80,7 @@ mix dialyzer
 - **Dynamic Hero Slideshow** with Ken Burns effect
 - **Portfolio Grid** with randomized display
 - **Contact Form** with real-time validation
-- **PhotoShuffle Module** - Reusable image management library
+- **[PhotoShuffle](https://github.com/unaffiliatedstudios/photo_shuffle)** - External library for image management and shuffling
 - **Responsive Design** - Mobile-first approach
 
 ## Learn More
