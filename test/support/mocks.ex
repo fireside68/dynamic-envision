@@ -1,1 +1,1 @@
-Mox.defmock(PhotoShuffle.FileSystemMock, for: PhotoShuffle.FileSystemBehaviour)
+Mox.defmock(DynamicEnvision.Photos.FileSystemMock, for: DynamicEnvision.Photos.FileSystemBehaviour)

@@ -44,5 +44,5 @@ config :phoenix_live_view,
   enable_expensive_runtime_checks: true
 
 # Configure PhotoShuffle to use mock file system in tests
-config :photo_shuffle,
-  file_system: PhotoShuffle.FileSystemMock
+config :dynamic_envision,
+  file_system: DynamicEnvision.Photos.FileSystemMock
