@@ -50,7 +50,7 @@ defmodule DynamicEnvisionWeb.ContactLive do
 
             <div class="space-y-6">
               <div class="flex items-start gap-4">
-                <div class="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                <div class="shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
                   <span class="text-xl">📞</span>
                 </div>
                 <div>
@@ -60,17 +60,19 @@ defmodule DynamicEnvisionWeb.ContactLive do
               </div>
 
               <div class="flex items-start gap-4">
-                <div class="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                <div class="shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
                   <span class="text-xl">📍</span>
                 </div>
                 <div>
                   <h3 class="font-semibold text-gray-900 mb-1">Service Area</h3>
-                  <p class="text-gray-600">Denver Metro Area<br />Cheyenne to Pueblo</p>
+                  <p class="text-gray-600">
+                    Denver Metro Area<br />Cheyenne to Colorado Springs, Boulder, and Castle Rock
+                  </p>
                 </div>
               </div>
 
               <div class="flex items-start gap-4">
-                <div class="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                <div class="shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
                   <span class="text-xl">✓</span>
                 </div>
                 <div>

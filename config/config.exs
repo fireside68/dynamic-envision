@@ -62,8 +62,8 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 # Configure PhotoShuffle to use local file system by default
-config :dynamic_envision,
-  file_system: DynamicEnvision.Photos.FileSystem.Local
+config :photo_shuffle,
+  file_system: PhotoShuffle.FileSystem.Local
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

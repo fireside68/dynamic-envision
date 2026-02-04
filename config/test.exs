@@ -7,7 +7,7 @@ import Config
 # Run `mix help test` for more information.
 config :dynamic_envision, DynamicEnvision.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "P@$$W0RD",
   hostname: "localhost",
   database: "dynamic_envision_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
@@ -44,5 +44,5 @@ config :phoenix_live_view,
   enable_expensive_runtime_checks: true
 
 # Configure PhotoShuffle to use mock file system in tests
-config :dynamic_envision,
-  file_system: DynamicEnvision.Photos.FileSystemMock
+config :photo_shuffle,
+  file_system: PhotoShuffle.FileSystemMock

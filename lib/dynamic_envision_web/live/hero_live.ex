@@ -1,7 +1,7 @@
 defmodule DynamicEnvisionWeb.HeroLive do
   use DynamicEnvisionWeb, :live_component
 
-  alias DynamicEnvision.Photos.PhotoShuffle
+  alias PhotoShuffle
 
   @impl true
   def mount(socket) do
@@ -50,7 +50,7 @@ defmodule DynamicEnvisionWeb.HeroLive do
         <%!-- Dark overlay for readability --%>
         <div class="absolute inset-0 bg-gray-900/75"></div>
         <%!-- Subtle gradient overlay --%>
-        <div class="absolute inset-0 bg-gradient-to-b from-gray-900/50 via-transparent to-gray-900/80">
+        <div class="absolute inset-0 bg-linear-to-b from-gray-900/50 via-transparent to-gray-900/80">
         </div>
       </div>
 

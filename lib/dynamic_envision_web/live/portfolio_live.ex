@@ -1,7 +1,7 @@
 defmodule DynamicEnvisionWeb.PortfolioLive do
   use DynamicEnvisionWeb, :live_component
 
-  alias DynamicEnvision.Photos.PhotoShuffle
+  alias PhotoShuffle
 
   @impl true
   def mount(socket) do

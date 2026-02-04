@@ -115,7 +115,7 @@ defmodule DynamicEnvisionWeb.Sections do
           <div class="space-y-6">
             <%= for point <- key_differentiators() do %>
               <div class="flex gap-4">
-                <div class="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                <div class="shrink-0 w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
                   <span class="text-2xl">{point.icon}</span>
                 </div>
                 <div>
