@@ -102,8 +102,18 @@ defmodule DynamicEnvisionWeb.PortfolioLive do
     windows_path = Application.app_dir(:dynamic_envision, "priv/static/design/pictures/windows")
     exterior_path = Application.app_dir(:dynamic_envision, "priv/static/design/pictures/exterior")
 
-    with {:ok, windows} <- PhotoShuffle.process_images(windows_path, "Windows"),
-         {:ok, exterior} <- PhotoShuffle.process_images(exterior_path, "Exterior") do
+    # Custom URL builder for dynamic-envision paths
+    # Converts: "/full/path/priv/static/design/pictures/windows/IMG_5366.jpg"
+    # To: "/design/pictures/windows/IMG_5366.jpg"
+    url_builder = fn path, _base_url ->
+      case String.split(path, "priv/static/", parts: 2) do
+        [_prefix, relative_path] -> "/" <> relative_path
+        _ -> "/" <> Path.basename(path)
+      end
+    end
+
+    with {:ok, windows} <- PhotoShuffle.process_images(windows_path, "Windows", url_builder: url_builder),
+         {:ok, exterior} <- PhotoShuffle.process_images(exterior_path, "Exterior", url_builder: url_builder) do
       {:ok, windows ++ exterior}
     end
   end

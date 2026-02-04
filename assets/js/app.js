@@ -33,6 +33,9 @@ Hooks.KenBurns = {
     this.images = JSON.parse(this.el.dataset.images || "[]")
     this.interval = 6000 // 6 seconds per image
 
+    // Find the parent LiveComponent element
+    this.component = this.el.closest('[data-phx-component]')
+
     if (this.images.length > 0) {
       this.startSlideshow()
     }
@@ -41,7 +44,10 @@ Hooks.KenBurns = {
   startSlideshow() {
     this.timer = setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.images.length
-      this.pushEvent("update_hero_image", {index: this.currentIndex})
+      // Push event to the LiveComponent, not the parent LiveView
+      if (this.component) {
+        this.pushEventTo(this.component, "update_hero_image", {index: this.currentIndex})
+      }
     }, this.interval)
   },
 
@@ -55,9 +61,12 @@ Hooks.KenBurns = {
 // Mobile menu toggle hook
 Hooks.MobileMenu = {
   mounted() {
+    // Find the parent LiveComponent element
+    this.component = this.el.closest('[data-phx-component]')
+
     this.handleEscape = (e) => {
-      if (e.key === "Escape") {
-        this.pushEvent("close_mobile_menu", {})
+      if (e.key === "Escape" && this.component) {
+        this.pushEventTo(this.component, "close_mobile_menu", {})
       }
     }
 
@@ -83,8 +92,12 @@ Hooks.SmoothScroll = {
           block: "start"
         })
 
-        // Close mobile menu if open
-        this.pushEvent("close_mobile_menu", {})
+        // Close mobile menu if open - find the navigation component
+        const navComponent = document.querySelector('[data-phx-component]')
+        if (navComponent) {
+          // The phx-click handler on the link will handle closing
+          // We don't need to push the event here since phx-click already does it
+        }
       }
     })
   }
