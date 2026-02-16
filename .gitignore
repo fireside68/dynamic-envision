@@ -22,3 +22,44 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Elixir & Phoenix
+/_build
+/deps
+/*.ez
+/cover
+/doc
+/.fetch
+/erl_crash.dump
+*.beam
+/config/*.secret.exs
+.elixir_ls/
+/priv/static/
+/priv/cert/*.pem
+
+# Phoenix LiveView
+/assets/node_modules/
+
+# Wallaby screenshots
+/tmp/wallaby_screenshots/
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# Mix
+.mix_tasks
+
+# Test coverage
+/cover/
+/coverage/
+
+# Dialyzer
+/priv/plts/
+
+# Mise (version manager)
+.mise.local.toml
+/.mise/
+.mix/
+.hex/

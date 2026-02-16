@@ -1,0 +1,24 @@
+# Mise configuration for Dynamic Envision Solutions
+# https://mise.jdx.dev/
+
+[tools]
+# Elixir 1.18.1 (latest stable, avoiding 1.19 bleeding edge)
+elixir = "1.18.1"
+
+# Erlang/OTP 27 (matches Elixir 1.18 requirements)
+erlang = "27.2"
+
+# Node.js for asset compilation
+node = "20.11.1"
+
+[env]
+# Ensure Mix uses the local Hex and Rebar
+MIX_HOME = "{{config_root}}/.mix"
+HEX_HOME = "{{config_root}}/.hex"
+
+[settings]
+# Use system installed tools as fallback
+legacy_version_file = true
+
+# Faster parallel downloads
+jobs = 4
