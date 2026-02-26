@@ -2,6 +2,7 @@ defmodule DynamicEnvisionWeb.PortfolioLive do
   use DynamicEnvisionWeb, :live_component
 
   alias PhotoShuffle
+  alias DynamicEnvision.Photos
 
   @impl true
   def mount(socket) do
@@ -88,13 +89,33 @@ defmodule DynamicEnvisionWeb.PortfolioLive do
   # Private Functions
 
   defp load_portfolio_items(socket) do
-    case load_all_images() do
-      {:ok, all_images} ->
-        portfolio_items = PhotoShuffle.shuffle_images(all_images, 6)
-        assign(socket, portfolio_items: portfolio_items)
+    db_photos = Photos.list_photos(limit: 50)
 
-      {:error, _reason} ->
-        assign(socket, portfolio_items: [])
+    if length(db_photos) >= 3 do
+      portfolio_items =
+        db_photos
+        |> Enum.shuffle()
+        |> Enum.take(6)
+        |> Enum.map(fn photo ->
+          # Template uses: image.src, image.title, image.category, image.location (nil-safe)
+          %{
+            src: photo.url,
+            title: photo.filename,
+            category: String.capitalize(photo.category),
+            location: nil
+          }
+        end)
+
+      assign(socket, portfolio_items: portfolio_items)
+    else
+      # Fall back to local static images when fewer than 3 DB photos exist
+      case load_all_images() do
+        {:ok, all_images} ->
+          assign(socket, portfolio_items: PhotoShuffle.shuffle_images(all_images, 6))
+
+        {:error, _reason} ->
+          assign(socket, portfolio_items: [])
+      end
     end
   end
 

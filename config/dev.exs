@@ -59,3 +59,14 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+# ExAws / Tigris config for development (reads real creds from env if set)
+config :ex_aws,
+  access_key_id: System.get_env("AWS_ACCESS_KEY_ID", "dev_key"),
+  secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY", "dev_secret"),
+  json_codec: Jason
+
+config :ex_aws, :s3,
+  scheme: "https://",
+  host: "t3.storage.dev",
+  region: "auto"

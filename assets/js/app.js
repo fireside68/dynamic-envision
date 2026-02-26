@@ -21,6 +21,7 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
+import Uploaders from "./uploaders"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
@@ -31,7 +32,7 @@ Hooks.KenBurns = {
   mounted() {
     this.currentIndex = 0
     this.images = JSON.parse(this.el.dataset.images || "[]")
-    this.interval = 6000 // 6 seconds per image
+    this.interval = 10000 // 10 seconds per image (matches Ken Burns animation duration)
 
     // Find the parent LiveComponent element
     this.component = this.el.closest('[data-phx-component]')
@@ -106,7 +107,8 @@ Hooks.SmoothScroll = {
 let liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: Hooks
+  hooks: Hooks,
+  uploaders: Uploaders
 })
 
 // Show progress bar on live navigation and form submits
