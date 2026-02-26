@@ -34,7 +34,7 @@ dist-ssr
 *.beam
 /config/*.secret.exs
 .elixir_ls/
-/priv/static/
+/priv/static/assets/
 /priv/cert/*.pem
 
 # Phoenix LiveView

@@ -9,6 +9,12 @@ defmodule DynamicEnvisionWeb.HomeLive.Index do
   end
 
   @impl true
+  def handle_info({:shuffle_portfolio, images}, socket) do
+    send_update(DynamicEnvisionWeb.PortfolioLive, id: "portfolio", portfolio_items: images)
+    {:noreply, socket}
+  end
+
+  @impl true
   def render(assigns) do
     ~H"""
     <div class="w-full bg-white">
