@@ -219,7 +219,9 @@ defmodule DynamicEnvisionWeb.Admin.PortfolioLive do
                 class="bg-amber-600 hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold px-6 py-2.5 rounded-lg transition-colors"
                 disabled={length(@uploads.photo.entries) == 0}
               >
-                Upload {length(@uploads.photo.entries)} Photo{if length(@uploads.photo.entries) != 1, do: "s", else: ""}
+                Upload {length(@uploads.photo.entries)} Photo{if length(@uploads.photo.entries) != 1,
+                  do: "s",
+                  else: ""}
               </button>
             </div>
           </form>
@@ -246,7 +248,7 @@ defmodule DynamicEnvisionWeb.Admin.PortfolioLive do
                   <img
                     src={photo.url}
                     alt={photo.filename}
-                    class="w-16 h-16 object-cover rounded-lg flex-shrink-0 bg-gray-100"
+                    class="w-16 h-16 object-cover rounded-lg shrink-0 bg-gray-100"
                   />
                   <div class="flex-1 min-w-0">
                     <p class="text-sm font-medium text-gray-900 truncate">{photo.filename}</p>
@@ -261,7 +263,7 @@ defmodule DynamicEnvisionWeb.Admin.PortfolioLive do
                       <% end %>
                     </div>
                   </div>
-                  <div class="flex items-center gap-2 flex-shrink-0">
+                  <div class="flex items-center gap-2 shrink-0">
                     <button
                       type="button"
                       phx-click="toggle_featured"

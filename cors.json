@@ -1,0 +1,17 @@
+[
+  {
+    "AllowedHeaders": [
+      "*"
+    ],
+    "AllowedMethods": [
+      "PUT",
+      "GET",
+      "HEAD"
+    ],
+    "AllowedOrigins": [
+      "http://localhost:4000",
+      "https://your-app.fly.dev"
+    ],
+    "MaxAgeSeconds": 3600
+  }
+]
