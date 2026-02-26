@@ -2,6 +2,7 @@ defmodule DynamicEnvisionWeb.HeroLive do
   use DynamicEnvisionWeb, :live_component
 
   alias PhotoShuffle
+  alias DynamicEnvision.Photos
 
   @impl true
   def mount(socket) do
@@ -131,13 +132,24 @@ defmodule DynamicEnvisionWeb.HeroLive do
   # Private Functions
 
   defp load_hero_images(socket) do
-    case load_images_from_directories() do
-      {:ok, images} ->
-        hero_images = PhotoShuffle.shuffle_images(images, 8)
-        assign(socket, hero_images: hero_images)
+    db_images = Photos.list_featured_photos(limit: 8)
 
-      {:error, _reason} ->
-        assign(socket, hero_images: [])
+    if length(db_images) >= 3 do
+      hero_images =
+        db_images
+        |> Enum.shuffle()
+        |> Enum.map(fn photo -> %{src: photo.url, title: photo.filename} end)
+
+      assign(socket, hero_images: hero_images)
+    else
+      # Fall back to local static images when fewer than 3 featured DB photos exist
+      case load_images_from_directories() do
+        {:ok, images} ->
+          assign(socket, hero_images: PhotoShuffle.shuffle_images(images, 8))
+
+        {:error, _reason} ->
+          assign(socket, hero_images: [])
+      end
     end
   end
 

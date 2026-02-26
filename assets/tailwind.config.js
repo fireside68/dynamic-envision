@@ -21,17 +21,17 @@ module.exports = {
         }
       },
       animation: {
-        'ken-burns': 'kenBurns 7s ease-out forwards',
-        'ken-burns-alt': 'kenBurnsAlt 7s ease-out forwards',
+        'ken-burns': 'kenBurns 10s ease-out forwards',
+        'ken-burns-alt': 'kenBurnsAlt 10s ease-out forwards',
       },
       keyframes: {
         kenBurns: {
           '0%': { transform: 'scale(1) translate(0, 0)' },
-          '100%': { transform: 'scale(1.15) translate(-2%, -2%)' },
+          '100%': { transform: 'scale(1.10) translate(-2%, -2%)' },
         },
         kenBurnsAlt: {
           '0%': { transform: 'scale(1) translate(0, 0)' },
-          '100%': { transform: 'scale(1.15) translate(2%, 2%)' },
+          '100%': { transform: 'scale(1.10) translate(2%, 2%)' },
         },
       },
     },

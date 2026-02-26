@@ -10,7 +10,7 @@
     transform: scale(1) translate(0, 0);
   }
   100% {
-    transform: scale(1.15) translate(-2%, -2%);
+    transform: scale(1.10) translate(-2%, -2%);
   }
 }
 
@@ -19,16 +19,16 @@
     transform: scale(1) translate(0, 0);
   }
   100% {
-    transform: scale(1.15) translate(2%, 2%);
+    transform: scale(1.10) translate(2%, 2%);
   }
 }
 
 .animate-ken-burns {
-  animation: kenBurns 7s ease-out forwards;
+  animation: kenBurns 10s ease-out forwards;
 }
 
 .animate-ken-burns-alt {
-  animation: kenBurnsAlt 7s ease-out forwards;
+  animation: kenBurnsAlt 10s ease-out forwards;
 }
 
 /* Smooth transitions */

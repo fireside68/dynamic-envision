@@ -114,4 +114,16 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
+  # Tigris S3-compatible object storage (via ExAws)
+  config :ex_aws,
+    access_key_id: System.fetch_env!("AWS_ACCESS_KEY_ID"),
+    secret_access_key: System.fetch_env!("AWS_SECRET_ACCESS_KEY"),
+    # Required: ex_aws defaults to Poison which is not a dep
+    json_codec: Jason
+
+  config :ex_aws, :s3,
+    scheme: "https://",
+    host: "t3.storage.dev",
+    region: "auto"
 end

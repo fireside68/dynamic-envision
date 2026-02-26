@@ -20,6 +20,13 @@ defmodule DynamicEnvisionWeb.Router do
     live "/", HomeLive.Index, :index
   end
 
+  # Admin routes — NOTE: No authentication. Add Plug.BasicAuth before going to production.
+  scope "/admin", DynamicEnvisionWeb.Admin do
+    pipe_through :browser
+
+    live "/portfolio", PortfolioLive, :index
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", DynamicEnvisionWeb do
   #   pipe_through :api

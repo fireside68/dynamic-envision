@@ -72,6 +72,12 @@ defmodule DynamicEnvision.MixProject do
       # PhotoShuffle - Image management library
       {:photo_shuffle, github: "unaffiliatedstudios/photo_shuffle"},
 
+      # S3 / Tigris object storage
+      {:ex_aws, "~> 2.5"},
+      {:ex_aws_s3, "~> 2.5"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.7"},
+
       # Testing
       {:mox, "~> 1.1", only: :test},
       {:wallaby, "~> 0.29.0", only: :test, runtime: false},

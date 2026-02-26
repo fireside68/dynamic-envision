@@ -63,3 +63,6 @@ dist-ssr
 /.mise/
 .mix/
 .hex/
+
+.env
+.env.local
