@@ -14,15 +14,18 @@ defmodule DynamicEnvisionWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :admin_auth do
+    plug :basic_auth
+  end
+
   scope "/", DynamicEnvisionWeb do
     pipe_through :browser
 
     live "/", HomeLive.Index, :index
   end
 
-  # Admin routes — NOTE: No authentication. Add Plug.BasicAuth before going to production.
   scope "/admin", DynamicEnvisionWeb.Admin do
-    pipe_through :browser
+    pipe_through [:browser, :admin_auth]
 
     live "/portfolio", PortfolioLive, :index
   end
@@ -31,6 +34,20 @@ defmodule DynamicEnvisionWeb.Router do
   # scope "/api", DynamicEnvisionWeb do
   #   pipe_through :api
   # end
+
+  defp basic_auth(conn, _opts) do
+    valid = [
+      {System.get_env("ADMIN_USER_1"), System.get_env("ADMIN_PASS_1")},
+      {System.get_env("ADMIN_USER_2"), System.get_env("ADMIN_PASS_2")}
+    ]
+
+    with {user, pass} <- Plug.BasicAuth.parse_basic_auth(conn),
+         true <- Enum.any?(valid, fn {u, p} -> u == user && p == pass end) do
+      conn
+    else
+      _ -> conn |> Plug.BasicAuth.request_basic_auth(realm: "Admin") |> halt()
+    end
+  end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:dynamic_envision, :dev_routes) do
