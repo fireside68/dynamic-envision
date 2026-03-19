@@ -18,8 +18,8 @@ defmodule DynamicEnvisionWeb.Router do
     plug DynamicEnvisionWeb.Plugs.RequireAuth
   end
 
-  pipeline :require_owner do
-    plug DynamicEnvisionWeb.Plugs.RequireOwner
+  pipeline :require_admin do
+    plug DynamicEnvisionWeb.Plugs.RequireAdmin
   end
 
   scope "/", DynamicEnvisionWeb do
@@ -32,14 +32,16 @@ defmodule DynamicEnvisionWeb.Router do
   scope "/auth", DynamicEnvisionWeb do
     pipe_through :browser
 
+    get "/logout", AuthController, :logout
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
   end
 
-  # Admin routes — protected by owner role
+  # Admin routes — protected by admin role (owner or office)
   scope "/admin", DynamicEnvisionWeb.Admin do
-    pipe_through [:browser, :require_auth, :require_owner]
+    pipe_through [:browser, :require_auth, :require_admin]
 
+    live "/", DashboardLive, :index
     live "/portfolio", PortfolioLive, :index
   end
 
