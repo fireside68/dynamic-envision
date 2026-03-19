@@ -3,9 +3,21 @@ defmodule DynamicEnvisionWeb.HomeLive.Index do
 
   import DynamicEnvisionWeb.Sections
 
+  alias DynamicEnvision.Contractors
+
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Dynamic Envision Solutions")}
+  def mount(_params, session, socket) do
+    current_contractor =
+      case session["contractor_id"] do
+        nil -> nil
+        id ->
+          case Contractors.get_contractor(id) do
+            {:ok, c} -> c
+            _ -> nil
+          end
+      end
+
+    {:ok, assign(socket, page_title: "Dynamic Envision Solutions", current_contractor: current_contractor)}
   end
 
   @impl true
@@ -13,7 +25,7 @@ defmodule DynamicEnvisionWeb.HomeLive.Index do
     ~H"""
     <div class="w-full bg-white">
       <%!-- Navigation --%>
-      <.live_component module={DynamicEnvisionWeb.NavigationLive} id="navigation" />
+      <.live_component module={DynamicEnvisionWeb.NavigationLive} id="navigation" current_contractor={@current_contractor} />
 
       <%!-- Hero Section with Ken Burns Slideshow --%>
       <.live_component module={DynamicEnvisionWeb.HeroLive} id="hero" />

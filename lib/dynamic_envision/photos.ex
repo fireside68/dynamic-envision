@@ -1,80 +1,118 @@
 defmodule DynamicEnvision.Photos do
   @moduledoc """
   Context for managing portfolio photos stored in Tigris S3.
+
+  Photo website_status state machine:
+    pending -> published | archived
+    pending -> queued -> published | archived (optional review step)
+    delivery_flagged is orthogonal — can be set in any state.
   """
 
   import Ecto.Query, warn: false
   alias DynamicEnvision.Repo
   alias DynamicEnvision.Photos.Photo
 
-  @doc """
-  Returns featured photos for the hero slideshow, ordered by position then insertion time.
-  """
+  # ---- Public-facing queries (published only) ----
+
+  @doc "Featured photos for the hero slideshow — published only."
   def list_featured_photos(opts \\ []) do
     limit = Keyword.get(opts, :limit, 8)
 
     Photo
-    |> where([p], p.featured == true)
+    |> where([p], p.featured == true and p.website_status == "published")
     |> order_by([p], asc: p.position, asc: p.inserted_at)
     |> limit(^limit)
     |> Repo.all()
   end
 
-  @doc """
-  Returns all photos for the portfolio, optionally filtered by category.
-  """
+  @doc "Published photos for the public portfolio, optionally filtered by category."
   def list_photos(opts \\ []) do
     category = Keyword.get(opts, :category)
     limit = Keyword.get(opts, :limit, 50)
 
     query =
       Photo
+      |> where([p], p.website_status == "published")
       |> order_by([p], asc: p.position, asc: p.inserted_at)
       |> limit(^limit)
 
-    query =
-      if category do
-        where(query, [p], p.category == ^category)
-      else
-        query
-      end
+    query = if category, do: where(query, [p], p.category == ^category), else: query
 
     Repo.all(query)
   end
 
-  @doc """
-  Gets a single photo. Raises `Ecto.NoResultsError` if not found.
-  """
+  # ---- Admin queries ----
+
+  @doc "All photos regardless of status, newest first."
+  def list_all_photos do
+    Photo
+    |> order_by([p], desc: p.inserted_at)
+    |> Repo.all()
+  end
+
+  @doc "Photos awaiting review (status: pending), newest first."
+  def list_pending_photos do
+    Photo
+    |> where([p], p.website_status == "pending")
+    |> order_by([p], desc: p.inserted_at)
+    |> Repo.all()
+  end
+
+  @doc "Photos flagged for company delivery, newest first."
+  def list_delivery_queue do
+    Photo
+    |> where([p], p.delivery_flagged == true)
+    |> order_by([p], desc: p.inserted_at)
+    |> Repo.all()
+  end
+
+  # ---- CRUD ----
+
   def get_photo!(id), do: Repo.get!(Photo, id)
 
-  @doc """
-  Creates a photo record after a successful S3 upload.
-  """
   def create_photo(attrs \\ %{}) do
     %Photo{}
     |> Photo.changeset(attrs)
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a photo's attributes.
-  """
   def update_photo(%Photo{} = photo, attrs) do
     photo
     |> Photo.changeset(attrs)
     |> Repo.update()
   end
 
-  @doc """
-  Deletes a photo record. Does not delete the file from S3.
-  """
-  def delete_photo(%Photo{} = photo) do
-    Repo.delete(photo)
+  def delete_photo(%Photo{} = photo), do: Repo.delete(photo)
+
+  # ---- Status transitions ----
+
+  @doc "Publish a photo to the public website gallery."
+  def publish_photo(%Photo{} = photo) do
+    update_photo(photo, %{website_status: "published", approved: true})
   end
 
-  @doc """
-  Returns a changeset for tracking photo changes.
-  """
+  @doc "Queue a photo for website review (intermediate state before publishing)."
+  def queue_for_website(%Photo{} = photo) do
+    update_photo(photo, %{website_status: "queued"})
+  end
+
+  @doc "Archive a photo — not published, kept in storage."
+  def archive_photo(%Photo{} = photo) do
+    update_photo(photo, %{website_status: "archived", featured: false, approved: false})
+  end
+
+  @doc "Toggle the delivery flag on a photo."
+  def set_delivery_flagged(%Photo{} = photo, flagged) when is_boolean(flagged) do
+    update_photo(photo, %{delivery_flagged: flagged})
+  end
+
+  # Legacy helpers kept for backward compatibility with existing upload code
+  @doc false
+  def approve_photo(%Photo{} = photo), do: publish_photo(photo)
+
+  @doc false
+  def reject_photo(%Photo{} = photo), do: archive_photo(photo)
+
   def change_photo(%Photo{} = photo \\ %Photo{}, attrs \\ %{}) do
     Photo.changeset(photo, attrs)
   end

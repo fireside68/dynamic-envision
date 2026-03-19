@@ -1,9 +1,11 @@
 defmodule DynamicEnvisionWeb.NavigationLive do
   use DynamicEnvisionWeb, :live_component
 
+  alias DynamicEnvision.Contractors.Contractor
+
   @impl true
   def mount(socket) do
-    {:ok, assign(socket, mobile_menu_open: false)}
+    {:ok, assign(socket, mobile_menu_open: false, current_contractor: nil)}
   end
 
   @impl true
@@ -22,16 +24,16 @@ defmodule DynamicEnvisionWeb.NavigationLive do
     <div phx-hook="MobileMenu" id="mobile-menu-hook">
       <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm border-b border-gray-200">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div class="flex items-center gap-3">
+          <.link navigate={~p"/"} class="flex items-center gap-3">
             <img
-              src="/design/logos/fulllogo_transparent.png"
+              src="/images/des_logo.svg"
               alt="Dynamic Envision Solutions"
-              class="h-10 w-auto"
+              class="h-12 w-auto"
             />
             <span class="text-lg font-bold text-gray-900 hidden sm:block">
               Dynamic Envision Solutions
             </span>
-          </div>
+          </.link>
 
           <%!-- Desktop Navigation --%>
           <div class="hidden md:flex gap-6 lg:gap-8 text-sm font-medium">
@@ -67,6 +69,30 @@ defmodule DynamicEnvisionWeb.NavigationLive do
             >
               Contact
             </a>
+          </div>
+
+          <%!-- Auth Button --%>
+          <div class="hidden md:flex items-center gap-3">
+            <%= if @current_contractor do %>
+              <%= if Contractor.admin?(@current_contractor) do %>
+                <a href="/admin" class="text-sm text-amber-700 font-medium hover:underline">Admin</a>
+              <% else %>
+                <a href="/portal" class="text-sm text-amber-700 font-medium hover:underline">Portal</a>
+              <% end %>
+              <a
+                href="/auth/logout"
+                class="text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-3 py-1.5 rounded-lg transition"
+              >
+                Sign Out
+              </a>
+            <% else %>
+              <a
+                href="/auth/google"
+                class="text-sm bg-amber-600 hover:bg-amber-700 text-white font-medium px-3 py-1.5 rounded-lg transition"
+              >
+                Sign In
+              </a>
+            <% end %>
           </div>
 
           <%!-- Mobile Menu Button --%>
@@ -128,6 +154,26 @@ defmodule DynamicEnvisionWeb.NavigationLive do
             >
               Contact
             </a>
+            <div class="border-t border-gray-100 pt-2 mt-2">
+              <%= if @current_contractor do %>
+                <%= if Contractor.admin?(@current_contractor) do %>
+                  <a href="/admin" class="block py-3 text-amber-700 hover:bg-gray-50 rounded-lg px-3 transition font-medium">
+                    Admin
+                  </a>
+                <% else %>
+                  <a href="/portal" class="block py-3 text-amber-700 hover:bg-gray-50 rounded-lg px-3 transition font-medium">
+                    Portal
+                  </a>
+                <% end %>
+                <a href="/auth/logout" class="block py-3 text-gray-700 hover:bg-gray-50 rounded-lg px-3 transition font-medium">
+                  Sign Out
+                </a>
+              <% else %>
+                <a href="/auth/google" class="block py-3 text-amber-700 hover:bg-gray-50 rounded-lg px-3 transition font-medium">
+                  Sign In
+                </a>
+              <% end %>
+            </div>
           </div>
         </div>
       </nav>

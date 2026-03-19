@@ -115,7 +115,13 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 
+  # Google OAuth credentials (set via: fly secrets set GOOGLE_CLIENT_ID=... GOOGLE_CLIENT_SECRET=...)
+  config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+    client_id: System.fetch_env!("GOOGLE_CLIENT_ID"),
+    client_secret: System.fetch_env!("GOOGLE_CLIENT_SECRET")
+
   # Tigris S3-compatible object storage (via ExAws)
+  # fly secrets set AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=... S3_BUCKET_NAME=...
   config :ex_aws,
     access_key_id: System.fetch_env!("AWS_ACCESS_KEY_ID"),
     secret_access_key: System.fetch_env!("AWS_SECRET_ACCESS_KEY"),
@@ -126,4 +132,8 @@ if config_env() == :prod do
     scheme: "https://",
     host: "t3.storage.dev",
     region: "auto"
+
+  # S3_BUCKET_NAME is read at runtime by UploadHelper (defaults to "dynamic-bucket" if unset)
+  # Seed initial contractors on every deploy via SEED_CONTRACTORS JSON secret:
+  #   fly secrets set SEED_CONTRACTORS='[{"email":"...","name":"...","roles":["owner"]}]'
 end
