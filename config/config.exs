@@ -61,6 +61,9 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Use tzdata for timezone conversions
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+
 # Configure PhotoShuffle to use local file system by default
 config :photo_shuffle,
   file_system: PhotoShuffle.FileSystem.Local

@@ -87,6 +87,9 @@ defmodule DynamicEnvision.MixProject do
       {:ueberauth, "~> 0.10"},
       {:ueberauth_google, "~> 0.10"},
 
+      # Timezone support
+      {:tzdata, "~> 1.1"},
+
       # Development & Code Quality
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
