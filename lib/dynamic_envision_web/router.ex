@@ -14,17 +14,41 @@ defmodule DynamicEnvisionWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :require_auth do
+    plug DynamicEnvisionWeb.Plugs.RequireAuth
+  end
+
+  pipeline :require_owner do
+    plug DynamicEnvisionWeb.Plugs.RequireOwner
+  end
+
   scope "/", DynamicEnvisionWeb do
     pipe_through :browser
 
     live "/", HomeLive.Index, :index
   end
 
-  # Admin routes — NOTE: No authentication. Add Plug.BasicAuth before going to production.
-  scope "/admin", DynamicEnvisionWeb.Admin do
+  # OAuth routes
+  scope "/auth", DynamicEnvisionWeb do
     pipe_through :browser
 
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+  end
+
+  # Admin routes — protected by owner role
+  scope "/admin", DynamicEnvisionWeb.Admin do
+    pipe_through [:browser, :require_auth, :require_owner]
+
     live "/portfolio", PortfolioLive, :index
+  end
+
+  # Contractor portal routes
+  scope "/portal", DynamicEnvisionWeb.Portal do
+    pipe_through [:browser, :require_auth]
+
+    live "/", ShiftLive, :index
+    live "/history", ShiftLive, :history
   end
 
   # Other scopes may use custom stacks.

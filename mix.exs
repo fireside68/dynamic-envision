@@ -83,6 +83,10 @@ defmodule DynamicEnvision.MixProject do
       {:wallaby, "~> 0.29.0", only: :test, runtime: false},
       {:excoveralls, "~> 0.18", only: :test},
 
+      # Auth
+      {:ueberauth, "~> 0.10"},
+      {:ueberauth_google, "~> 0.10"},
+
       # Development & Code Quality
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},

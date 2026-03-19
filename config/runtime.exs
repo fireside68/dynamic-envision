@@ -115,6 +115,11 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 
+  # Google OAuth credentials (set via: fly secrets set GOOGLE_CLIENT_ID=... GOOGLE_CLIENT_SECRET=...)
+  config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+    client_id: System.fetch_env!("GOOGLE_CLIENT_ID"),
+    client_secret: System.fetch_env!("GOOGLE_CLIENT_SECRET")
+
   # Tigris S3-compatible object storage (via ExAws)
   config :ex_aws,
     access_key_id: System.fetch_env!("AWS_ACCESS_KEY_ID"),
