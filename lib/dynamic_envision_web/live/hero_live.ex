@@ -58,17 +58,15 @@ defmodule DynamicEnvisionWeb.HeroLive do
       <div class="relative max-w-6xl mx-auto px-6 py-16 lg:py-24">
         <%!-- Top section: Logo + headline --%>
         <div class="text-center mb-12 lg:mb-16">
-          <%!-- Logo with backdrop --%>
-          <div class="relative inline-block mb-8">
-            <%!-- Solid backdrop for contrast --%>
-            <div class="absolute inset-0 -m-4 bg-white/90 rounded-2xl shadow-lg"></div>
-            <%!-- Soft glow effect --%>
-            <div class="absolute inset-0 -m-8 bg-amber-400/20 blur-2xl rounded-full"></div>
-            <img
-              src="/design/logos/fulllogo_transparent.png"
-              alt="Dynamic Envision Solutions"
-              class="relative w-48 sm:w-56 md:w-64 lg:w-72 h-auto drop-shadow-lg"
-            />
+          <%!-- Frosted glass logo overlay --%>
+          <div class="inline-block mb-8">
+            <div style="background: rgba(255,255,255,0.25); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); padding: 1.5rem 2.5rem; border-radius: 4px;">
+              <img
+                src="/images/des_logo.svg"
+                alt="Dynamic Envision Solutions"
+                class="w-40 sm:w-52 md:w-64 lg:w-72 h-auto"
+              />
+            </div>
           </div>
           <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight drop-shadow-lg">
             What Can We Help You With?
