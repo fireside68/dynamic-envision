@@ -8,7 +8,34 @@ defmodule DynamicEnvisionWeb.Sections do
   use Phoenix.Component
 
   @doc """
-  Renders the Services section with Windows, Doors, and Exterior categories.
+  Renders a single service category card.
+  """
+  attr :id, :string, required: true
+  attr :icon, :string, required: true
+  attr :title, :string, required: true
+  attr :description, :string, required: true
+  attr :items, :list, required: true
+
+  def section_card(assigns) do
+    ~H"""
+    <div id={@id} class="bg-gray-50 rounded-xl p-8">
+      <div class="text-4xl mb-4">{@icon}</div>
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">{@title}</h3>
+      <p class="text-gray-600 mb-6">{@description}</p>
+      <div class="space-y-3">
+        <%= for item <- @items do %>
+          <div class="flex items-center gap-2 text-gray-700">
+            <span class="text-amber-600">✓</span>
+            <span>{item}</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    """
+  end
+
+  @doc """
+  Renders the home page Services teaser — three top-level categories with Learn More links.
   """
   attr :id, :string, default: "services"
 
@@ -22,20 +49,20 @@ defmodule DynamicEnvisionWeb.Sections do
             Our Services
           </h2>
           <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Premium window and door solutions for homes across the Denver metro area
+            Premium solutions for homes across the Denver metro area
           </p>
         </div>
 
         <%!-- Service Categories --%>
         <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
           <%!-- Windows --%>
-          <div id="windows" class="bg-gray-50 rounded-xl p-8">
+          <div id="windows-teaser" class="bg-gray-50 rounded-xl p-8 flex flex-col">
             <div class="text-4xl mb-4">🪟</div>
             <h3 class="text-2xl font-bold text-gray-900 mb-4">Windows</h3>
             <p class="text-gray-600 mb-6">
               Energy-efficient windows that enhance comfort and reduce costs
             </p>
-            <div class="space-y-3">
+            <div class="space-y-3 mb-8">
               <%= for material <- ["Vinyl Windows", "Wood Windows", "Composite Windows", "Fiberglass Windows"] do %>
                 <div class="flex items-center gap-2 text-gray-700">
                   <span class="text-amber-600">✓</span>
@@ -43,16 +70,21 @@ defmodule DynamicEnvisionWeb.Sections do
                 </div>
               <% end %>
             </div>
+            <div class="mt-auto">
+              <.link navigate="/services#windows" class="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold">
+                Learn More <span>→</span>
+              </.link>
+            </div>
           </div>
 
           <%!-- Doors --%>
-          <div id="doors" class="bg-gray-50 rounded-xl p-8">
+          <div id="doors-teaser" class="bg-gray-50 rounded-xl p-8 flex flex-col">
             <div class="text-4xl mb-4">🚪</div>
             <h3 class="text-2xl font-bold text-gray-900 mb-4">Doors</h3>
             <p class="text-gray-600 mb-6">
               Beautiful, secure entryways that make a lasting impression
             </p>
-            <div class="space-y-3">
+            <div class="space-y-3 mb-8">
               <%= for door_type <- ["Entry Doors", "French Doors", "Sliding Doors", "Patio Doors"] do %>
                 <div class="flex items-center gap-2 text-gray-700">
                   <span class="text-amber-600">✓</span>
@@ -60,22 +92,32 @@ defmodule DynamicEnvisionWeb.Sections do
                 </div>
               <% end %>
             </div>
+            <div class="mt-auto">
+              <.link navigate="/services#doors" class="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold">
+                Learn More <span>→</span>
+              </.link>
+            </div>
           </div>
 
           <%!-- Exterior --%>
-          <div id="exterior" class="bg-gray-50 rounded-xl p-8">
+          <div id="exterior-teaser" class="bg-gray-50 rounded-xl p-8 flex flex-col">
             <div class="text-4xl mb-4">🏠</div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-4">Exterior</h3>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Exterior & Custom</h3>
             <p class="text-gray-600 mb-6">
-              Complete exterior solutions for lasting curb appeal
+              Outdoor living, siding, custom fabrication, and more
             </p>
-            <div class="space-y-3">
-              <%= for service <- ["Siding Installation", "Trim Work", "Exterior Repairs", "Renovations"] do %>
+            <div class="space-y-3 mb-8">
+              <%= for service <- ["Siding", "Decks & Fencing", "Floors", "3D Printing & CNC", "Custom Containers"] do %>
                 <div class="flex items-center gap-2 text-gray-700">
                   <span class="text-amber-600">✓</span>
                   <span>{service}</span>
                 </div>
               <% end %>
+            </div>
+            <div class="mt-auto">
+              <.link navigate="/services#exterior" class="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold">
+                Learn More <span>→</span>
+              </.link>
             </div>
           </div>
         </div>

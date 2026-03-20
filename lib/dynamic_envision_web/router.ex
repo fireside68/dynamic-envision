@@ -26,6 +26,7 @@ defmodule DynamicEnvisionWeb.Router do
     pipe_through :browser
 
     live "/", HomeLive.Index, :index
+    live "/services", ServicesLive.Index, :index
   end
 
   # Auth routes (OAuth + logout)

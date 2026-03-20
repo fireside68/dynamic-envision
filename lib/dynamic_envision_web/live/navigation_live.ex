@@ -37,14 +37,13 @@ defmodule DynamicEnvisionWeb.NavigationLive do
 
           <%!-- Desktop Navigation --%>
           <div class="hidden md:flex gap-6 lg:gap-8 text-sm font-medium">
-            <a
-              href="#services"
-              phx-hook="SmoothScroll"
+            <.link
+              navigate={~p"/services"}
               id="nav-services"
               class="text-gray-700 hover:text-amber-700 transition"
             >
               Services
-            </a>
+            </.link>
             <a
               href="#portfolio"
               phx-hook="SmoothScroll"
@@ -114,16 +113,15 @@ defmodule DynamicEnvisionWeb.NavigationLive do
         <%!-- Mobile Menu Dropdown --%>
         <div class={"md:hidden absolute top-full left-0 right-0 bg-white border-b border-gray-200 shadow-lg transition-all duration-300 ease-in-out #{if @mobile_menu_open, do: "opacity-100 visible translate-y-0", else: "opacity-0 invisible -translate-y-2"}"}>
           <div class="px-6 py-4 space-y-1">
-            <a
-              href="#services"
-              phx-hook="SmoothScroll"
+            <.link
+              navigate={~p"/services"}
               phx-click="close_mobile_menu"
               phx-target={@myself}
               id="mobile-nav-services"
               class="block py-3 text-gray-700 hover:text-amber-700 hover:bg-gray-50 rounded-lg px-3 transition font-medium"
             >
               Services
-            </a>
+            </.link>
             <a
               href="#portfolio"
               phx-hook="SmoothScroll"
