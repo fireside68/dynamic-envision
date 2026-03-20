@@ -119,7 +119,7 @@ if config_env() == :prod do
   config :ueberauth, Ueberauth.Strategy.Google.OAuth,
     client_id: System.fetch_env!("GOOGLE_CLIENT_ID"),
     client_secret: System.fetch_env!("GOOGLE_CLIENT_SECRET"),
-    redirect_uri: "https://#{System.get_env("PHX_HOST")}/auth/google/callback"
+    redirect_uri: System.get_env("GOOGLE_REDIRECT_URI") || "https://#{host}/auth/google/callback"
 
   # Tigris S3-compatible object storage (via ExAws)
   # fly secrets set AWS_ACCESS_KEY_ID=... AWS_SECRET_ACCESS_KEY=... S3_BUCKET_NAME=...
