@@ -80,9 +80,7 @@ defmodule DynamicEnvisionWeb.HeroLive do
         <div class="grid md:grid-cols-3 gap-6 lg:gap-8">
           <%= for category <- product_categories() do %>
             <a
-              href={"##{category.id}"}
-              phx-hook="SmoothScroll"
-              id={"hero-link-#{category.id}"}
+              href={"/services##{category.id}"}
               class="group bg-white/5 backdrop-blur border border-white/10 rounded-xl p-6 lg:p-8 text-left hover:bg-white/10 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-1"
             >
               <div class="text-4xl mb-4">{category.icon}</div>
@@ -182,25 +180,25 @@ defmodule DynamicEnvisionWeb.HeroLive do
   defp product_categories do
     [
       %{
-        id: "windows",
+        id: "windows-doors",
         icon: "🪟",
-        title: "Windows",
-        description: "Energy-efficient windows that enhance comfort and reduce costs",
-        features: ["Vinyl", "Wood", "Composite", "Fiberglass"]
-      },
-      %{
-        id: "doors",
-        icon: "🚪",
-        title: "Doors",
-        description: "Beautiful, secure entryways that make a lasting impression",
-        features: ["Entry", "French", "Sliding", "Patio"]
+        title: "Windows & Doors",
+        description: "Expert installation of energy-efficient windows and beautiful, secure entry doors",
+        features: ["Vinyl", "Wood", "Fiberglass", "Entry Doors", "Patio Doors"]
       },
       %{
         id: "exterior",
         icon: "🏠",
         title: "Exterior",
-        description: "Complete exterior solutions for lasting curb appeal",
-        features: ["Siding", "Trim", "Repairs", "Renovations"]
+        description: "Complete outdoor solutions for lasting curb appeal and outdoor living",
+        features: ["Siding", "Decks", "Fencing", "Floors"]
+      },
+      %{
+        id: "fabrication",
+        icon: "⚙️",
+        title: "Custom Fabrication",
+        description: "Precision 3D printing, CNC work, and handcrafted custom containers",
+        features: ["3D Printing", "CNC", "Custom Containers"]
       }
     ]
   end

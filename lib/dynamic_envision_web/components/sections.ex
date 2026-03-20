@@ -55,45 +55,23 @@ defmodule DynamicEnvisionWeb.Sections do
 
         <%!-- Service Categories --%>
         <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
-          <%!-- Windows --%>
-          <div id="windows-teaser" class="bg-gray-50 rounded-xl p-8 flex flex-col">
+          <%!-- Windows & Doors --%>
+          <div id="windows-doors-teaser" class="bg-gray-50 rounded-xl p-8 flex flex-col">
             <div class="text-4xl mb-4">🪟</div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-4">Windows</h3>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Windows & Doors</h3>
             <p class="text-gray-600 mb-6">
-              Energy-efficient windows that enhance comfort and reduce costs
+              Expert installation of energy-efficient windows and beautiful, secure entry doors
             </p>
             <div class="space-y-3 mb-8">
-              <%= for material <- ["Vinyl Windows", "Wood Windows", "Composite Windows", "Fiberglass Windows"] do %>
+              <%= for item <- ["Vinyl, Wood & Fiberglass Windows", "Entry & French Doors", "Sliding & Patio Doors", "Storm & Security Doors"] do %>
                 <div class="flex items-center gap-2 text-gray-700">
                   <span class="text-amber-600">✓</span>
-                  <span>{material}</span>
+                  <span>{item}</span>
                 </div>
               <% end %>
             </div>
             <div class="mt-auto">
-              <.link navigate="/services#windows" class="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold">
-                Learn More <span>→</span>
-              </.link>
-            </div>
-          </div>
-
-          <%!-- Doors --%>
-          <div id="doors-teaser" class="bg-gray-50 rounded-xl p-8 flex flex-col">
-            <div class="text-4xl mb-4">🚪</div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-4">Doors</h3>
-            <p class="text-gray-600 mb-6">
-              Beautiful, secure entryways that make a lasting impression
-            </p>
-            <div class="space-y-3 mb-8">
-              <%= for door_type <- ["Entry Doors", "French Doors", "Sliding Doors", "Patio Doors"] do %>
-                <div class="flex items-center gap-2 text-gray-700">
-                  <span class="text-amber-600">✓</span>
-                  <span>{door_type}</span>
-                </div>
-              <% end %>
-            </div>
-            <div class="mt-auto">
-              <.link navigate="/services#doors" class="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold">
+              <.link navigate="/services#windows-doors" class="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold">
                 Learn More <span>→</span>
               </.link>
             </div>
@@ -102,12 +80,12 @@ defmodule DynamicEnvisionWeb.Sections do
           <%!-- Exterior --%>
           <div id="exterior-teaser" class="bg-gray-50 rounded-xl p-8 flex flex-col">
             <div class="text-4xl mb-4">🏠</div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-4">Exterior & Custom</h3>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Exterior</h3>
             <p class="text-gray-600 mb-6">
-              Outdoor living, siding, custom fabrication, and more
+              Complete outdoor solutions for lasting curb appeal and outdoor living
             </p>
             <div class="space-y-3 mb-8">
-              <%= for service <- ["Siding", "Decks & Fencing", "Floors", "3D Printing & CNC", "Custom Containers"] do %>
+              <%= for service <- ["Siding", "Decks", "Fencing", "Floors"] do %>
                 <div class="flex items-center gap-2 text-gray-700">
                   <span class="text-amber-600">✓</span>
                   <span>{service}</span>
@@ -116,6 +94,28 @@ defmodule DynamicEnvisionWeb.Sections do
             </div>
             <div class="mt-auto">
               <.link navigate="/services#exterior" class="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold">
+                Learn More <span>→</span>
+              </.link>
+            </div>
+          </div>
+
+          <%!-- Custom Fabrication --%>
+          <div id="fabrication-teaser" class="bg-gray-50 rounded-xl p-8 flex flex-col">
+            <div class="text-4xl mb-4">⚙️</div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Custom Fabrication</h3>
+            <p class="text-gray-600 mb-6">
+              Precision 3D printing, CNC work, and handcrafted custom containers
+            </p>
+            <div class="space-y-3 mb-8">
+              <%= for item <- ["3D Printing", "CNC Cutting & Carving", "Custom Containers", "Chests & Display Cases"] do %>
+                <div class="flex items-center gap-2 text-gray-700">
+                  <span class="text-amber-600">✓</span>
+                  <span>{item}</span>
+                </div>
+              <% end %>
+            </div>
+            <div class="mt-auto">
+              <.link navigate="/services#fabrication" class="inline-flex items-center gap-2 text-amber-600 hover:text-amber-700 font-semibold">
                 Learn More <span>→</span>
               </.link>
             </div>
