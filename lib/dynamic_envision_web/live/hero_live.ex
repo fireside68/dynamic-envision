@@ -69,10 +69,10 @@ defmodule DynamicEnvisionWeb.HeroLive do
             </div>
           </div>
           <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight drop-shadow-lg">
-            What Can We Help You With?
+            You Dream It. We Create It.
           </h1>
           <p class="text-lg text-gray-300 max-w-2xl mx-auto drop-shadow">
-            15 years of premium window and door installation across the Denver metro area.
+            15 years of quality window and door installation across the Denver metro, northern Colorado, and Cheyenne areas.
           </p>
         </div>
 
