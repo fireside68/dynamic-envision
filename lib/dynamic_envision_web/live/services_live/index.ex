@@ -1,17 +1,30 @@
 defmodule DynamicEnvisionWeb.ServicesLive.Index do
   use DynamicEnvisionWeb, :live_view
 
-  import DynamicEnvisionWeb.Sections
+  alias DynamicEnvision.Contractors
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Services — Dynamic Envision Solutions")}
+  def mount(_params, session, socket) do
+    current_contractor =
+      case session["contractor_id"] do
+        nil -> nil
+        id ->
+          case Contractors.get_contractor(id) do
+            {:ok, c} -> c
+            _ -> nil
+          end
+      end
+
+    {:ok, assign(socket, page_title: "Services — Dynamic Envision Solutions", current_contractor: current_contractor)}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <div class="w-full bg-white">
+      <%!-- Navigation --%>
+      <.live_component module={DynamicEnvisionWeb.NavigationLive} id="navigation" current_contractor={@current_contractor} />
+
       <%!-- Page Header --%>
       <div class="bg-gray-900 py-16 lg:py-24">
         <div class="max-w-6xl mx-auto px-6 text-center">
@@ -22,140 +35,252 @@ defmodule DynamicEnvisionWeb.ServicesLive.Index do
         </div>
       </div>
 
-      <%!-- Windows --%>
-      <section id="windows" class="bg-white py-16 lg:py-20">
-        <div class="max-w-6xl mx-auto px-6">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="text-3xl">🪟</span>
-            <h2 class="text-2xl lg:text-3xl font-bold text-gray-900">Windows</h2>
-          </div>
-          <p class="text-gray-500 mb-10">Energy-efficient windows for every style and budget</p>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <.section_card
-              id="vinyl-windows"
-              icon="🪟"
-              title="Vinyl Windows"
-              description="Low-maintenance, high-efficiency vinyl frames built to last"
-              items={["Double-pane glass", "Custom sizing", "UV coating", "Multiple styles"]}
-            />
-            <.section_card
-              id="wood-windows"
-              icon="🌲"
-              title="Wood Windows"
-              description="Classic warmth and character with premium hardwood frames"
-              items={["Interior/exterior options", "Paint or stain finish", "Custom millwork", "Historic restoration"]}
-            />
-            <.section_card
-              id="composite-windows"
-              icon="⚡"
-              title="Composite & Fiberglass"
-              description="Maximum durability with the look of wood and performance of vinyl"
-              items={["Extreme weather rated", "Low expansion/contraction", "Paintable surface", "Long warranties"]}
-            />
+      <%!-- ============================================================ --%>
+      <%!-- WINDOWS & DOORS --%>
+      <%!-- ============================================================ --%>
+      <div id="windows-doors" class="scroll-mt-16">
+        <div class="bg-amber-600 py-5 px-6">
+          <div class="max-w-6xl mx-auto flex items-center gap-3">
+            <span class="text-2xl">🪟</span>
+            <h2 class="text-xl lg:text-2xl font-bold text-white tracking-wide">Windows & Doors</h2>
           </div>
         </div>
-      </section>
 
-      <hr class="border-gray-100 max-w-6xl mx-auto" />
+        <%!-- Windows — text left, image right --%>
+        <.service_section
+          id="windows"
+          icon="🪟"
+          title="Windows"
+          description="Energy-efficient windows in every style and material, custom sized and installed to fit your home perfectly."
+          items={[
+            "Vinyl Windows — low-maintenance, high-efficiency",
+            "Wood Windows — classic warmth and character",
+            "Composite & Fiberglass — maximum durability",
+            "Double and triple-pane options",
+            "Custom sizing and UV-protective coatings"
+          ]}
+          layout={:text_left}
+          bg="bg-white"
+        />
 
-      <%!-- Doors --%>
-      <section id="doors" class="bg-white py-16 lg:py-20">
-        <div class="max-w-6xl mx-auto px-6">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="text-3xl">🚪</span>
-            <h2 class="text-2xl lg:text-3xl font-bold text-gray-900">Doors</h2>
-          </div>
-          <p class="text-gray-500 mb-10">Beautiful, secure entryways that make a lasting impression</p>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <.section_card
-              id="entry-doors"
-              icon="🚪"
-              title="Entry Doors"
-              description="Welcoming, secure front doors that define your home's character"
-              items={["Steel, fiberglass & wood", "Smart lock compatible", "Custom glass inserts", "Weather sealing"]}
-            />
-            <.section_card
-              id="french-sliding-doors"
-              icon="🏡"
-              title="French & Sliding Doors"
-              description="Elegant transitions between indoor and outdoor living spaces"
-              items={["French door systems", "Sliding patio doors", "Multi-slide options", "Screen door packages"]}
-            />
-            <.section_card
-              id="specialty-doors"
-              icon="🔑"
-              title="Specialty Doors"
-              description="Storm doors, bi-fold, and other door solutions for every need"
-              items={["Storm & security doors", "Bi-fold & pocket doors", "Barn door hardware", "ADA compliant options"]}
-            />
-          </div>
-        </div>
-      </section>
+        <%!-- Doors — image left, text right --%>
+        <.service_section
+          id="doors"
+          icon="🚪"
+          title="Doors"
+          description="Beautiful, secure entryways and transitions that define your home's character and comfort."
+          items={[
+            "Entry Doors — steel, fiberglass, and wood",
+            "French & Sliding Patio Doors",
+            "Storm & Security Doors",
+            "Smart lock compatible",
+            "Custom glass inserts and weather sealing"
+          ]}
+          layout={:image_left}
+          bg="bg-gray-50"
+        />
+      </div>
 
-      <hr class="border-gray-100 max-w-6xl mx-auto" />
-
-      <%!-- Exterior & Custom --%>
-      <section id="exterior" class="bg-gray-50 py-16 lg:py-20">
-        <div class="max-w-6xl mx-auto px-6">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="text-3xl">🏠</span>
-            <h2 class="text-2xl lg:text-3xl font-bold text-gray-900">Exterior & Custom</h2>
-          </div>
-          <p class="text-gray-500 mb-10">Outdoor living, siding, custom fabrication, and more</p>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <.section_card
-              id="siding"
-              icon="🏠"
-              title="Siding"
-              description="Durable siding installations that protect and beautify"
-              items={["Vinyl siding", "Wood siding", "Fiber cement", "Trim & fascia"]}
-            />
-            <.section_card
-              id="floors"
-              icon="🪵"
-              title="Floors"
-              description="Quality flooring solutions for every room and style"
-              items={["Hardwood", "Tile", "Laminate", "Vinyl plank"]}
-            />
-            <.section_card
-              id="decks"
-              icon="🌿"
-              title="Decks"
-              description="Custom decks built for comfort and lasting durability"
-              items={["Wood decks", "Composite decks", "Deck repairs", "Railings"]}
-            />
-            <.section_card
-              id="fencing"
-              icon="🔒"
-              title="Fencing"
-              description="Fencing solutions for privacy, security, and curb appeal"
-              items={["Wood fencing", "Vinyl fencing", "Chain link", "Gates"]}
-            />
-            <.section_card
-              id="3d-printing"
-              icon="🖨️"
-              title="3D Printing"
-              description="Precision-printed parts, prototypes, and custom pieces"
-              items={["Custom parts", "Prototypes", "Decorative pieces", "Replacement components"]}
-            />
-            <.section_card
-              id="cnc"
-              icon="⚙️"
-              title="CNC"
-              description="Computer-controlled cutting and carving for exact results"
-              items={["Precision cutting", "Custom woodwork", "Metal fabrication", "Engraving"]}
-            />
-            <.section_card
-              id="containers"
-              icon="📦"
-              title="Custom Chests, Boxes & Containers"
-              description="Handcrafted storage built to your exact specifications"
-              items={["Storage chests", "Tool boxes", "Display cases", "Custom crates"]}
-            />
+      <%!-- ============================================================ --%>
+      <%!-- EXTERIOR --%>
+      <%!-- ============================================================ --%>
+      <div id="exterior" class="scroll-mt-16">
+        <div class="bg-amber-600 py-5 px-6">
+          <div class="max-w-6xl mx-auto flex items-center gap-3">
+            <span class="text-2xl">🏠</span>
+            <h2 class="text-xl lg:text-2xl font-bold text-white tracking-wide">Exterior</h2>
           </div>
         </div>
-      </section>
+
+        <%!-- Siding — text left, image right --%>
+        <.service_section
+          id="siding"
+          icon="🏠"
+          title="Siding"
+          description="Durable siding installations that protect your home and elevate its curb appeal for years to come."
+          items={[
+            "Vinyl Siding — low-maintenance and colorfast",
+            "Wood Siding — natural, timeless character",
+            "Fiber Cement — maximum weather resistance",
+            "Trim, fascia, and soffit work",
+            "Full tear-off and replacement"
+          ]}
+          layout={:text_left}
+          bg="bg-white"
+        />
+
+        <%!-- Floors — image left, text right --%>
+        <.service_section
+          id="floors"
+          icon="🪵"
+          title="Floors"
+          description="Quality flooring solutions for every room, style, and budget — professionally installed from subfloor up."
+          items={[
+            "Hardwood — timeless and refinishable",
+            "Tile — durable and easy to clean",
+            "Laminate — budget-friendly beauty",
+            "Vinyl Plank (LVP) — waterproof and versatile",
+            "Subfloor prep and installation"
+          ]}
+          layout={:image_left}
+          bg="bg-gray-50"
+        />
+
+        <%!-- Decks — text left, image right --%>
+        <.service_section
+          id="decks"
+          icon="🌿"
+          title="Decks"
+          description="Custom decks designed for your lifestyle and built for years of outdoor enjoyment."
+          items={[
+            "Wood Decks — classic, highly customizable",
+            "Composite Decks — low-maintenance and durable",
+            "Deck repairs and refinishing",
+            "Railings, stairs, and pergola additions",
+            "Custom shapes and multi-level designs"
+          ]}
+          layout={:text_left}
+          bg="bg-white"
+        />
+
+        <%!-- Fencing — image left, text right --%>
+        <.service_section
+          id="fencing"
+          icon="🔒"
+          title="Fencing"
+          description="Privacy, security, and curb appeal — we fence to fit your property and your preferences."
+          items={[
+            "Wood Fencing — privacy and classic style",
+            "Vinyl Fencing — clean look, zero maintenance",
+            "Chain Link — secure and economical",
+            "Custom gates and hardware",
+            "Full post setting and installation"
+          ]}
+          layout={:image_left}
+          bg="bg-gray-50"
+        />
+      </div>
+
+      <%!-- ============================================================ --%>
+      <%!-- CUSTOM FABRICATION --%>
+      <%!-- ============================================================ --%>
+      <div id="fabrication" class="scroll-mt-16">
+        <div class="bg-amber-600 py-5 px-6">
+          <div class="max-w-6xl mx-auto flex items-center gap-3">
+            <span class="text-2xl">⚙️</span>
+            <h2 class="text-xl lg:text-2xl font-bold text-white tracking-wide">Custom Fabrication</h2>
+          </div>
+        </div>
+
+        <%!-- 3D Printing — text left, image right --%>
+        <.service_section
+          id="3d-printing"
+          icon="🖨️"
+          title="3D Printing"
+          description="Precision-printed parts, prototypes, and one-of-a-kind custom pieces made to your exact spec."
+          items={[
+            "Custom replacement parts",
+            "Prototypes and design iterations",
+            "Decorative and architectural pieces",
+            "Multiple materials and finishes",
+            "Small batch and single-unit production"
+          ]}
+          layout={:text_left}
+          bg="bg-white"
+        />
+
+        <%!-- CNC — image left, text right --%>
+        <.service_section
+          id="cnc"
+          icon="⚙️"
+          title="CNC"
+          description="Computer-controlled cutting and carving with exacting precision across wood and metal."
+          items={[
+            "Precision wood cutting and routing",
+            "Custom millwork and cabinetry components",
+            "Metal fabrication and cutting",
+            "Engraving and decorative detail work",
+            "CAD/CAM design collaboration"
+          ]}
+          layout={:image_left}
+          bg="bg-gray-50"
+        />
+
+        <%!-- Custom Containers — text left, image right --%>
+        <.service_section
+          id="containers"
+          icon="📦"
+          title="Custom Chests, Boxes & Containers"
+          description="Handcrafted storage built to your exact specifications — functional, beautiful, and built to last."
+          items={[
+            "Storage chests and hope chests",
+            "Tool boxes and job site cases",
+            "Display cases and shadow boxes",
+            "Custom crates and shipping containers",
+            "Decorative keepsake boxes"
+          ]}
+          layout={:text_left}
+          bg="bg-white"
+        />
+      </div>
     </div>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :icon, :string, required: true
+  attr :title, :string, required: true
+  attr :description, :string, required: true
+  attr :items, :list, required: true
+  attr :layout, :atom, required: true
+  attr :bg, :string, default: "bg-white"
+
+  defp service_section(assigns) do
+    ~H"""
+    <section id={@id} class={"#{@bg} py-16 lg:py-24 scroll-mt-16"}>
+      <div class="max-w-6xl mx-auto px-6">
+        <div class={"flex flex-col gap-10 lg:gap-16 lg:items-center #{if @layout == :text_left, do: "lg:flex-row", else: "lg:flex-row-reverse"}"}>
+
+          <%!-- Text Content --%>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">{@icon}</span>
+              <h3 class="text-2xl lg:text-3xl font-bold text-gray-900">{@title}</h3>
+            </div>
+            <p class="text-gray-500 text-lg mb-8 leading-relaxed">{@description}</p>
+            <div class="space-y-4">
+              <%= for item <- @items do %>
+                <div class="flex items-start gap-3 text-gray-700">
+                  <span class="text-amber-500 mt-0.5 flex-shrink-0 font-bold">✓</span>
+                  <span>{item}</span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <%!-- Image Placeholder --%>
+          <div class="w-full lg:w-2/5 flex-shrink-0">
+            <div class="relative aspect-[4/3] bg-gray-100 rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
+              <%!-- Wireframe-style X placeholder --%>
+              <svg
+                class="absolute inset-0 w-full h-full text-gray-200"
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="none"
+              >
+                <line x1="0" y1="0" x2="100%" y2="100%" stroke="currentColor" stroke-width="1" />
+                <line x1="100%" y1="0" x2="0" y2="100%" stroke="currentColor" stroke-width="1" />
+                <rect x="0" y="0" width="100%" height="100%" fill="none" stroke="currentColor" stroke-width="1" />
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                <span class="text-5xl opacity-20">{@icon}</span>
+                <span class="text-xs text-gray-300 font-medium tracking-widest uppercase">Gallery</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
     """
   end
 end
